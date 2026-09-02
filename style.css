@@ -388,6 +388,7 @@ h4,
 h5,
 h6 {
   clear: both;
+  text-wrap: balance;
 }
 
 p {
@@ -465,7 +466,7 @@ article .entry-content > ul {
   list-style: none;
 }
 article .entry-content > ul li::before {
-  content: "\276F";
+  content: "\276F" / "";
   color: var(--bright);
   font-weight: bold;
   display: inline-block;
@@ -479,6 +480,15 @@ ol {
 ol.comment-list {
   list-style: none;
   padding-left: 0;
+}
+ol.children{
+  list-style: none;
+}
+li.pingback{
+  margin-top: 1lh;
+}
+li.comment + li.comment {
+  margin-top: 1lh;
 }
 
 li > ul,
@@ -868,6 +878,10 @@ body #respond .comment-form-fields div.comment-form-input input {
   display: block;
 }
 
+.wp-block-jetpack-slideshow .wp-block-jetpack-slideshow_caption.gallery-caption {
+  background: rgb(0 0 0 / .6) !important;
+}
+
 /*--------------------------------------------------------------
 # Plugins
 --------------------------------------------------------------*/
@@ -1252,6 +1266,28 @@ header a {
   padding: 1em;
 }
 
+.leaflet-marker-icon path#color{
+  fill: var(--deep);
+}
+#circle, #color {
+  stroke: rgba(var(--greenearth-rgb), .9) !important;
+}
+.marker-cluster-small,
+.marker-cluster-small div{
+  background-color: rgba(32, 156, 49,0.6);
+  color: #fff;
+}
+.marker-cluster-medium,
+.marker-cluster-medium div{
+  background-color: rgba(var(--deep-rgb),0.6);
+  color: #fff;
+}
+.marker-cluster-large,
+.marker-cluster-large div{
+  background-color: rgba(var(--dark-rgb),0.6);
+  color: #fff;
+}
+
 /* Blockquote / Pullquote
 --------------------------------------------- */
 blockquote {
@@ -1357,11 +1393,11 @@ a.gbc-location-type-for-post,
   justify-content: flex-start;
   flex-wrap: wrap;
   margin-right: -1em;
+  gap: 1em;
 }
 a.location-type-block {
   width: calc(20% - 1em);
   background: var(--dark);
-  margin: 0 1em 1em 0;
   padding: 0 10px;
   line-height: 1.4em;
   text-align: center;
@@ -1457,7 +1493,7 @@ article.post-location-item h3 a {
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-right: -1em;
+  gap: 1em;
 }
 article.post-location-item {
   background-image: var(--article-img); /* set in html */
@@ -1467,7 +1503,6 @@ article.post-location-item {
   width: calc(25% - 1em);
   text-align: center;
   position: relative;
-  margin: 0 1em 1em 0;
 }
 @media all and (max-width: 1000px) {
   article.post-location-item {
@@ -1476,12 +1511,12 @@ article.post-location-item {
 }
 @media all and (max-width: 850px) {
   article.post-location-item {
-    width: calc(50% - 1em);
+    width: calc(50% - 0.5em);
   }
 }
 @media all and (max-width: 600px) {
   article.post-location-item {
-    width: calc(100% - 1em);
+    width: calc(100% - 0.1em);
   }
 }
 article.post-location-item h3 {
@@ -1496,7 +1531,7 @@ article.post-location-item:before {
   position: absolute;
   background: linear-gradient(
     to top right,
-    rgba(var(--bright-rgb), 0.8),
+    rgba(var(--dark-rgb), 0.8),
     rgba(var(--deep-rgb), 0.8)
   );
   left: 0;
@@ -1506,11 +1541,11 @@ article.post-location-item:before {
   z-index: 0;
 }
 article.post-location-item:hover:before,
-article.post-location-item:focus:before,
+article.post-location-item:focus-within:before,
 article.post-location-item:hover h3,
-article.post-location-item:focus h3,
+article.post-location-item:focus-within h3,
 article.post-location-item:hover h3 a,
-article.post-location-item:focus h3 a {
+article.post-location-item:focus-within h3 a {
   text-shadow: none;
   color: var(--dark);
   background: rgba(var(--light-rgb), 0.8);
@@ -1534,7 +1569,7 @@ article.post-location-item:nth-child(4n + 4):before {
   background: linear-gradient(
     to top right,
     rgba(var(--deep-rgb), 0.8),
-    rgba(var(--bright-rgb), 0.8)
+    rgba(var(--night-rgb), 0.8)
   );
 }
 section#homepage-hero {
@@ -1652,13 +1687,19 @@ body.page-template-homepage .site #primary,
   margin: 5px 5px 0 0;
   text-decoration: none !important;
 }
+@media all and (max-width: 400px){
+  .tag-cloud-link {
+    display: block;
+    text-align: center;
+  }
+}
 .tag-cloud-link:hover,
 .tag-cloud-link:focus {
   background: var(--night);
   color: var(--greenearth);
 }
 .tag-link-count {
-  color: var(--deep);
+  color: var(--dark);
 }
 .tag-cloud-link:hover .tag-link-count,
 .tag-cloud-link:focus .tag-link-count {
@@ -1670,6 +1711,8 @@ section.post_tags {
 
 /* No Byline on select pages
 --------------------------------------------- */
+.page-id-3 .byline,
+.page-id-3361 .byline,
 .page-id-3727 .byline {
   display: none;
 }
@@ -2185,10 +2228,10 @@ a#menu:focus .sprite {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-right: -1em;
+  gap: 1em;
 }
 #gbc-archive-items article.post-location-item {
-  width: calc(50% - 1em);
+  width: calc(50% - 0.5em);
 }
 @media all and (max-width: 1065px) and (min-width: 800px) {
   #gbc-archive-items article.post-location-item {
@@ -2197,7 +2240,7 @@ a#menu:focus .sprite {
 }
 @media all and (max-width: 550px) {
   #gbc-archive-items article.post-location-item {
-    width: calc(100% - 1em);
+    width: calc(100% - .01em);
   }
 }
 span.gbc-mask-container {
@@ -2230,6 +2273,12 @@ span.gbc-mask-container {
 .leaflet-container {
   font-family: unset;
 }
+.leaflet-control-attribution a {
+  color: var(--dark) !important;
+}
+.leaflet-control-attribution a svg.leaflet-attribution-flag{
+  display: none !important;
+}
 .pp-coords-caption {
   font-style: normal !important;
 }
@@ -2239,7 +2288,11 @@ span.gbc-mask-container {
 .archive-description figure figcaption:before {
   content: "Map: ";
 }
-
+/* MISC
+--------------------------------------------- */
+body:not(.home, .page-id-3361) .grecaptcha-badge {
+  visibility: hidden;
+}
 /* Print
 --------------------------------------------- */
 @media print {
