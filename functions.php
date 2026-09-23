@@ -438,5 +438,38 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+// Alignment
 add_theme_support( 'align-wide' );
 add_theme_support( 'align-full' );
+
+// Link unlinked Image block and Jetpack Slideshow images to their full-size files
+function gbc_link_images_to_file( $html, $block ) {
+	// Leave images using core's "Expand on click" lightbox alone
+	if ( false !== strpos( $html, 'wp-lightbox-container' ) ) {
+		return $html;
+	}
+	$is_slideshow = 'jetpack/slideshow' === $block['blockName'];
+
+	return preg_replace_callback(
+		'/(<a\b[^>]*>\s*)?(<img\b[^>]*>)/i',
+		function ( $m ) use ( $is_slideshow ) {
+			$img = $m[2];
+			// Already linked, or not a slide image
+			if ( ! empty( $m[1] ) || ( $is_slideshow && false === strpos( $img, 'wp-block-jetpack-slideshow_image' ) ) ) {
+				return $m[0];
+			}
+			$url = '';
+			// Prefer the attachment ID so we get the original, not a resized version
+			if ( preg_match( '/\bdata-id="(\d+)"|\bwp-image-(\d+)\b/', $img, $id ) ) {
+				$url = wp_get_attachment_url( (int) ( $id[1] ?: $id[2] ) );
+			}
+			if ( ! $url && preg_match( '/\bsrc="([^"]+)"/', $img, $src ) ) {
+				$url = html_entity_decode( $src[1] );
+			}
+			return $url ? '<a class="gbc-image-link" href="' . esc_url( $url ) . '">' . $img . '</a>' : $img;
+		},
+		$html
+	);
+}
+add_filter( 'render_block_core/image', 'gbc_link_images_to_file', 20, 2 );
+add_filter( 'render_block_jetpack/slideshow', 'gbc_link_images_to_file', 20, 2 );
